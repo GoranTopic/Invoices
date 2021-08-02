@@ -1,10 +1,11 @@
 #!/bin/bash
 
-CONF_FILE="invoice.conf"
+CONF_FILE="invoice.conf";
+LATEX_FILE="invoice.tex";
 
-declare -a DAYS_WORKED
-declare -a STARTING_TIMES 
-declare -a ENDING_TIMES 
+declare -a DAYS_WORKED;
+declare -a STARTING_TIMES;
+declare -a ENDING_TIMES;
 
 function add_workday(){
 		case $1 in
@@ -141,19 +142,47 @@ function get_time_diff(){
 		echo $(date -u -d @$(($later_time - $first_time)) '+%H:%M');
 }
 
+function write_invoice_header(){
+		# writes to a latex file using the detail from the config file
+		# Use the custom invoice class (invoice.cls)
+		echo '\documentclass{invoice}' > $LATEX_FILE
+		# Define \tab to create some horizontal white space
+		echo '\def \tab {\hspace*{3ex}}' >> $LATEX_FILE 
+		# begin document 
+		echo '\begin{document}' >> $LATEX_FILE
+		#--------------------
+		# HEADING SECTION
+		#--------------------
+		# Company providing the invoice
+		echo "\hfil{\Huge\bf $NAME}\hfil" >> $LATEX_FILE
+		# Whitespace
+		echo '\bigskip\break' >> $LATEX_FILE
+		# Horizontal line
+		echo '\hrule' >> $LATEX_FILE 
+		# Your address and contact information
+		echo "$ADDRESS \hfill  \\\ " >> $LATEX_FILE
+		echo "$CITY, $STATE $ZIP_CODE \hfill $PERSONAL_EMAIL" >> $LATEX_FILE
+		echo '\\ \\' >> $LATEX_FILE
+		echo '{\bf Invoice To:} \\' >> $LATEX_FILE
+		# Invoice recipient
+		echo "\tab $RECIP_NAME \\\ " >> $LATEX_FILE
+		# Recipient's company
+		echo "\tab $RECIP_ADDRESS \\\ " >> $LATEX_FILE
+		# Invoice date
+		echo '{\bf Date:} \\' >> $LATEX_FILE
+		echo '\tab \today \\' >> $LATEX_FILE
+		return 0
+}
+
 # load config file
 load_config_file;
 
 # check and load parameters
 load_parameter $@;
 
+# load header
+write_invoice_header;
 
-#echo ${DAYS_WORKED[*]}
-#echo ${STARTING_TIMES[*]}
-#echo ${ENDING_TIMES[*]}
-
-# Get the subject for the email
-EMAIL_SUBJECT="${NAME}_Host_Invoice_$(date --date="today" +"%m-%d-%y")";
 
 
 
@@ -164,30 +193,15 @@ for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
 		WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
 		WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m-%d-%y");
 		echo "getting Date for last ${DAYS_WORKED[$i]}: $WORK_DATE";
-
 		
-		TIME_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
-		echo $TIME_WORKED;
-		#LEAVE_TIME=$(date -d "${STARTING_TIMES[$i]} 5 hours" +'%H:%M %P')
-		#echo "Leave time from ${STARTING_TIMES[$i]}: $LEAVE_TIME";
+		HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
+		echo $HOURS_WORKED;
+		echo "\\\hourrow{$SERVICE services from ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]})}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
+
 
 		echo ""
 done
 
-
-
-#if [ $# -gt 0 ]
-	#then 
-			#NUMBER_OF_HOURS_WORKED=$1
-			#LEAVE_TIME=$(date -d "$STARTING_TIME $NUMBER_OF_HOURS_WORKED hours" +'%H:%M %P')
-	#else 
-			#echo "Setting number of hours worked to 5";
-			#NUMBER_OF_HOURS_WORKED=5
-			#LEAVE_TIME=$(date -d "$STARTING_TIME $NUMBER_OF_HOURS_WORKED hours" +'%H:%M %P')
-#fi
-
-#MATCH_STRING="\\\hourrow{.*"
-#REPLACING_STRING="\\\hourrow{Hosting services from $STARTING_TIME to $LEAVE_TIME}{$NUMBER_OF_HOURS_WORKED}{$HOUR_RATE}"
 
 #echo "Getting latex files..."
 #cd latex_files
@@ -198,10 +212,14 @@ done
 #sed "s/$MATCH_STRING/$REPLACING_STRING/" buffer1.tex > edited_template.tex
 #\rm -f buffer1.tex
 
-#echo "compiling Latex..."
-#pdflatex edited_template.tex
+echo "compiling Latex..."
+pdflatex invoice.tex
 
 #cp edited_template.pdf ../archive/$SUBJECT.pdf
+
+
+# Get the subject for the email
+#EMAIL_SUBJECT="${NAME}_Host_Invoice_$(date --date="today" +"%m-%d-%y")";
 
 #echo "sending mail to $EMAIL_TO"
 # mailx to send the invoice
