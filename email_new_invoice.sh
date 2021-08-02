@@ -83,7 +83,8 @@ function load_hours_param(){
 						print_help;
 						exit 1;
 				else 
-						ENDING_TIMES+=("$last");
+						time=$(date -d"$last" '+%H:%M')
+						ENDING_TIMES+=("$time");
 				fi			
 		else 
 				if ! is_time_regex $1; then 
@@ -174,6 +175,14 @@ function write_invoice_header(){
 		return 0
 }
 
+function writting_closing_tags(){
+		# writes the closing statements for the latex file
+		echo '\end{invoiceTable}' >> $LATEX_FILE
+		echo '\end{document}' >> $LATEX_FILE
+}
+
+
+
 # load config file
 load_config_file;
 
@@ -182,7 +191,6 @@ load_parameter $@;
 
 # load header
 write_invoice_header;
-
 
 
 
@@ -196,11 +204,14 @@ for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
 		
 		HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
 		echo $HOURS_WORKED;
-		echo "\\\hourrow{$SERVICE services from ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]})}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
+		echo "\\hourrow{$SERVICE services from ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
 
 
 		echo ""
 done
+
+# writting ending for file
+writting_closing_tags;
 
 
 #echo "Getting latex files..."
