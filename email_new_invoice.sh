@@ -99,7 +99,9 @@ function get_time_diff(){
 		# return the difference in time between to given times
 		first_time=$(date -d "$1" '+%s');
 		later_time=$(date -d "$2" '+%s');
-		echo $(date -u -d @$(($later_time - $first_time)) '+%H');
+		hours=$(date -u -d @$(($later_time - $first_time)) '+%H');
+		minutes=$(date -u -d @$(($later_time - $first_time)) '+%M');
+		echo "$hours.$((($minutes*10)/6))"
 }
 
 function write_invoice_header(){
@@ -114,6 +116,7 @@ function write_invoice_header(){
 		# HEADING SECTION
 		#--------------------
 		# Company providing the invoice
+
 		echo "\hfil{\Huge\bf $NAME}\hfil" >> $LATEX_FILE
 		# Whitespace
 		echo '\bigskip\break' >> $LATEX_FILE
@@ -158,13 +161,12 @@ echo "\feetype{$SERVICE Services}" >> $LATEX_FILE
 
 # for every day worked 
 for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
-
 		# get the date of the last day worked 
 		WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
 		WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m-%d-%y");
 		echo "getting Date for last ${DAYS_WORKED[$i]}: $WORK_DATE";
-		
 		HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
+		echo "HOURS_WORKED";
 		echo $HOURS_WORKED;
 		echo "\\hourrow{$SERVICE services from ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
 
