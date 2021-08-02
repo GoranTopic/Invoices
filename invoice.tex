@@ -1,7 +1,7 @@
 \documentclass{invoice}
 \def \tab {\hspace*{3ex}}
 \begin{document}
-\hfil{\Huge\bf Goran_Topic}\hfil
+\hfil{\Huge\bf Goran Topic}\hfil
 \bigskip\break
 \hrule
 340 Via Colinas \hfill  \\ 
@@ -12,7 +12,9 @@ Westlake Village, CA 19362 \hfill telegonicaxx@live.com
 \tab Los Angeles, CA 90038 \\ 
 {\bf Date:} \\
 \tab \today \\
-\\hourrow{Hosting services from 8:00pm to 1am)}{05:00}{15}
-\\hourrow{Hosting services from 8:00pm to 2:00am)}{06:00}{15}
+\begin{invoiceTable}
+\feetype{Hosting Services}
+\hourrow{Hosting services from 8:00pm to 1am}{05}{15}
+\hourrow{Hosting services from 8:00pm to 02:00}{06}{15}
 \end{invoiceTable}
 \end{document}

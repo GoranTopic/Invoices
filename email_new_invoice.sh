@@ -139,8 +139,8 @@ function load_parameter(){
 function get_time_diff(){
 		# return the difference in time between to given times
 		first_time=$(date -d "$1" '+%s');
-		later_time=$(date -d "$2" '+%s')
-		echo $(date -u -d @$(($later_time - $first_time)) '+%H:%M');
+		later_time=$(date -d "$2" '+%s');
+		echo $(date -u -d @$(($later_time - $first_time)) '+%H');
 }
 
 function write_invoice_header(){
@@ -193,6 +193,9 @@ load_parameter $@;
 write_invoice_header;
 
 
+echo '\begin{invoiceTable}' >> $LATEX_FILE
+# Fee category description
+echo "\feetype{$SERVICE Services}" >> $LATEX_FILE
 
 # for every day worked 
 for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter

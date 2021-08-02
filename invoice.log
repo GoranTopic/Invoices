@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.8.2)  2 AUG 2021 10:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.8.2)  2 AUG 2021 10:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -207,198 +207,49 @@ LaTeX Font Info:    ... okay on input line 3.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.4 \hfil{\Huge\bf Goran_
-                         Topic}\hfil
-? 
-! Interruption.
-<to be read again> 
-                   _
-l.4 \hfil{\Huge\bf Goran_
-                         Topic}\hfil
-? 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <24.88> on input line 4.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <20.74> on input line 4.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <17.28> on input line 4.
-! Extra }, or forgotten $.
-l.4 \hfil{\Huge\bf Goran_Topic}
-                               \hfil
-? 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.6 \hrule
-          
-? 
-! Interruption.
-<to be read again> 
-                   \hrule 
-l.6 \hrule
-          
-? 
 
 Underfull \hbox (badness 10000) in paragraph at lines 4--6
 
  []
 
-! Misplaced \noalign.
-\hline ->\noalign 
-                  {\ifnum 0=`}\fi \hrule \@height \arrayrulewidth \futurelet...
-l.17 \end{invoiceTable}
-                       
-? 
-! Interruption.
-<to be read again> 
-                   {
-l.17 \end{invoiceTable}
-                       
-? 
 
-Underfull \hbox (badness 10000) in paragraph at lines 7--17
+Underfull \hbox (badness 10000) in paragraph at lines 7--15
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 7--17
+Underfull \hbox (badness 10000) in paragraph at lines 7--15
 
  []
 
-! Misplaced \noalign.
-\hline ->\noalign 
-                  {\ifnum 0=`}\fi \hrule \@height \arrayrulewidth \futurelet...
-l.17 \end{invoiceTable}
-                       
-? 
-! Misplaced \noalign.
-\hline ->\noalign 
-                  {\ifnum 0=`}\fi \hrule \@height \arrayrulewidth \futurelet...
-l.17 \end{invoiceTable}
-                       
-? 
+( FP-ROUND ) ( FP-ROUND ) ( FP-MUL ) ( FP-ROUND ) ( FP-ROUND ) ( FP-ROUND )
+( FP-MUL ) ( FP-ROUND ) ( FP-DIV ) ( FP-ROUND )
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 1 on input line 19.
+
+
+Package longtable Warning: Table widths have changed. Rerun LaTeX.
+
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-! Misplaced alignment tab character &.
-\endinvoiceTable ...ine \hline {\bf Balance Due} &
-                                                   & & {\bf \$\total {cost}}...
-l.17 \end{invoiceTable}
-                       
-? 
-! Misplaced alignment tab character &.
-\endinvoiceTable ...e \hline {\bf Balance Due} & &
-                                                   & {\bf \$\total {cost}} \...
-l.17 \end{invoiceTable}
-                       
-? 
-! Misplaced alignment tab character &.
-\endinvoiceTable ...\hline {\bf Balance Due} & & &
-                                                   {\bf \$\total {cost}} \\ ...
-l.17 \end{invoiceTable}
-                       
-? 
-( FP-DIV ) ( FP-ROUND )
-! Misplaced \crcr.
-\endlongtable ->\crcr 
-                      \noalign {\let \LT@entry \LT@entry@chop \xdef \LT@save...
-l.17 \end{invoiceTable}
-                       
-? 
-! Misplaced \noalign.
-\endlongtable ->\crcr \noalign 
-                               {\let \LT@entry \LT@entry@chop \xdef \LT@save...
-l.17 \end{invoiceTable}
-                       
-? 
-! Undefined control sequence.
-\endlongtable ...\xdef \LT@save@row {\LT@save@row 
-                                                  }}\LT@echunk \LT@start \un...
-l.17 \end{invoiceTable}
-                       
-? 
-! Misplaced \crcr.
-\LT@echunk ->\crcr 
-                   \LT@save@row \cr \egroup \global \setbox \@ne \lastbox \u...
-l.17 \end{invoiceTable}
-                       
-? 
-! Misplaced \cr.
-\LT@echunk ->\crcr \LT@save@row \cr 
-                                    \egroup \global \setbox \@ne \lastbox \u...
-l.17 \end{invoiceTable}
-                       
-? 
-! Too many }'s.
-\LT@echunk ...etbox \@ne \lastbox \unskip \egroup 
-                                                  
-l.17 \end{invoiceTable}
-                       
-? 
-
-Underfull \hbox (badness 10000) in paragraph at lines 17--17
-
- []
-
-! Extra \endgroup.
-\endlongtable ... \penalty -\LT@end@pen \endgroup 
-                                                  \global \@mparbottom \z@ \...
-l.17 \end{invoiceTable}
-                       
-? 
-
-! LaTeX Error: \begin{document} ended by \end{longtable}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.17 \end{invoiceTable}
-                       
-? 
-! Extra \endgroup.
-<recently read> \endgroup 
-                          
-l.17 \end{invoiceTable}
-                       
-? 
-
-! LaTeX Error: \begin{document} ended by \end{invoiceTable}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.17 \end{invoiceTable}
-                       
-? 
-! Extra \endgroup.
-<recently read> \endgroup 
-                          
-l.17 \end{invoiceTable}
-                       
-? 
-[2] [3
-
-] (./invoice.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./invoice.aux) ) 
 Here is how much of TeX's memory you used:
- 2422 strings out of 483183
- 32723 string characters out of 5966293
- 288235 words of memory out of 5000000
- 17435 multiletter control sequences out of 15000+600000
- 536025 words of font info for 36 fonts, out of 8000000 for 9000
+ 2414 strings out of 483183
+ 32559 string characters out of 5966293
+ 290237 words of memory out of 5000000
+ 17427 multiletter control sequences out of 15000+600000
+ 534227 words of font info for 30 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 38i,5n,37p,860b,180s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/telix/.texlive2019/texmf-var/fonts/pk/ljfour/jknappe
-n/ec/tcbx2488.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
-i12.pfb>
-Output written on invoice.pdf (3 pages, 27637 bytes).
+ 38i,4n,37p,860b,209s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/t
+elix/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcbx1200.600pk> </home/
+telix/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
+Output written on invoice.pdf (1 page, 30963 bytes).
 PDF statistics:
- 27 PDF objects out of 1000 (max. 8388607)
+ 26 PDF objects out of 1000 (max. 8388607)
  18 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
