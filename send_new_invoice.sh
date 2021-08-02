@@ -2,35 +2,37 @@
 
 #Defining vaiables
 
-GMAIL_FROM="some-email@domain.com";
-GMAIL_PASSWORD="some-password";
+GMAIL_FROM="gorantopic.bot@gmail.com";
+GMAIL_PASSWORD="rs8G9sgx5PNBhX5";
 
-EMAIL_TO="some-other-email@domain.com";
+EMAIL_TO="daniel@thepearlgroup.us";
 
 EMAIL_MESSAGE_FILE="../email_message.txt"
 
-NAME="Joe Doe"; # name to be used 
+NAME="Goran_Topic"; # name to be used 
 
-STARTING_TIME="4:00 pm";
+STARTING_TIME="8:00 pm";
 
-DAY_OF_WORK="tuesday";
+DAY_OF_WORK="saturday";
 
-HOUR_RATE=25; 
+HOUR_RATE=15; # fifteen dollaras an hour
 # get the date of the lst saturday
 WORK_DATE=$(date --date="last $DAY_OF_WORK" +"%B %d, %Y");
 WORK_DATE_NUMERIC=$(date --date="last $DAY_OF_WORK" +"%m-%d-%y");
 echo "getting Date for last $DAY_OF_WORK: $WORK_DATE";
 
 # Get the subject for the email
-SUBJECT="${NAME}_Invoice_${WORK_DATE_NUMERIC}";
+SUBJECT="${NAME}_Host_Invoice_${WORK_DATE_NUMERIC}";
 
 if [ $# -gt 0 ]
 	then 
 			NUMBER_OF_HOURS_WORKED=$1
 			LEAVE_TIME=$(date -d "$STARTING_TIME $NUMBER_OF_HOURS_WORKED hours" +'%H:%M %P')
 	else 
-			echo "Error: pass the number of hours worked";
-			exit
+			echo "Setting number of hours worked to 5";
+			NUMBER_OF_HOURS_WORKED=5
+			LEAVE_TIME=$(date -d "$STARTING_TIME $NUMBER_OF_HOURS_WORKED hours" +'%H:%M %P')
+			
 fi
 
 MATCH_STRING="\\\hourrow{.*"
@@ -64,4 +66,5 @@ mailx -v  -s "$SUBJECT" \
 		-a "../archive/$SUBJECT.pdf" \
 		"$EMAIL_TO" < $EMAIL_MESSAGE_FILE
 
-rm edited_template*;
+
+echo "email send succesfully!"
