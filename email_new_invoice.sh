@@ -3,8 +3,8 @@
 CONF_FILE="invoice.conf"
 
 declare -a DAYS_WORKED
-declare -a STARTED_TIMES 
-declare -a ENDED_TIMES 
+declare -a STARTING_TIMES 
+declare -a ENDING_TIMES 
 
 
 
@@ -49,7 +49,6 @@ function add_workday(){
 }
 
 function print_help(){
-
 		echo """
 			Something went wrong:
 			plesae enter parameter of the form 12pm-2am
@@ -61,39 +60,43 @@ function is_time_regex(){
 		# return tru if it matches regex for a single number or a ranger
 		pattern='^([0-2])?[1-9](:[0-5][0-9])?([AaPp][mM])?$';
 		if [[ $1 =~ $pattern ]]; then 
-				return 1;
-		else
 				return 0;
+		else
+				return 1;
 		fi
 }
 
-function check_hours(){
+function load_hours_param(){
 		# return tru if it matches regex for a single number or a ranger
-		pattern='^([0-2])?[1-9](:[0-5][0-9])?([AaPp][mM])?$';
-		
 		echo "checking $1";
-
 		if [[ $1 =~ "-"  ]]; then # it is range
-				echo "$1 is range";
 				# divide range
 				first=$(echo $1 | cut -d '-' -f 1); 
-				last=$(echo $1 | cut -d '-' -f 2);
-				if is_time_regex $first; then 
-						echo "$first";
+				if ! is_time_regex $first; then 
+						echo "could not understand $first ";
+						print_help;
+						exit 1;
+				else
+						STARTING_TIMES+=("$first");
 				fi			
-				if is_time_regex $last; then 
-						echo "$last";
+				last=$(echo $1 | cut -d '-' -f 2);
+				if ! is_time_regex $last; then 
+						echo "could not understand $last ";
+						print_help;
+						exit 1;
+				else 
+						ENDING_TIMES+=("$last");
 				fi			
 		else 
-				if is_time_regex $1; then 
-					echo "$1 is hour";	
+				if ! is_time_regex $1; then 
+						echo "could not understand $1 ";
+						print_help;
+						exit 1;
 				else
-						echo "$1 is not hour";
+						STARTING_TIMES+=("$first");
+						ENDING_TIMES+=("$last");
 				fi
 		fi
-		
-
-		
 }
 
 function is_weekday(){
@@ -119,25 +122,24 @@ function check_config_file() {
 		fi
 }
 
-echo "checking parameters"
+function load_parameter(){
+		# load parameters 
+		args=("$@"); # load parameter into array
+				for ((i=0; i < $#; i++)); do # for every parameter
+						arg=${args[$i]} 
+						if is_weekday $arg ; then 
+								DAYS_WORKED+=($arg); # load weekday 
+								i=$((i+1));
+								hours=${args[$i]} # get next arg
+								load_hours_param $hours;
+						fi
+				done
+				return 0;
+		}
 
-echo " total parameters passed:"
-echo $#
-echo ''
 
-args=("$@"); # load parameter into array
-		for ((i=0; i < $#; i++)); do
-				arg=${args[$i]}
-				if is_weekday $arg ; then 
-						DAYS_WORKED+=($arg);
-						i=$((i+1));
-						hours=${args[$i]} # get next arg
-						check_hours $hours;
-				fi
-				echo '';
-		done
-
-#check_config_file
+check_config_file;
+load_parameter $@;
 #echo $NAME
 
 
