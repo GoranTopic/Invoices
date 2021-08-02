@@ -6,9 +6,6 @@ declare -a DAYS_WORKED
 declare -a STARTING_TIMES 
 declare -a ENDING_TIMES 
 
-
-
-
 function add_workday(){
 		case $1 in
 				monday)
@@ -93,8 +90,8 @@ function load_hours_param(){
 						print_help;
 						exit 1;
 				else
-						STARTING_TIMES+=("$first");
-						ENDING_TIMES+=("$last");
+						STARTING_TIMES+=("$STARTING_TIME");
+						ENDING_TIMES+=("$1");
 				fi
 		fi
 }
@@ -111,7 +108,7 @@ function is_weekday(){
 		esac
 }
 
-function check_config_file() {
+function load_config_file() {
 		# load config file
 		if test -f $CONF_FILE; then
 				echo "Loding config file";
@@ -126,9 +123,9 @@ function load_parameter(){
 		# load parameters 
 		args=("$@"); # load parameter into array
 				for ((i=0; i < $#; i++)); do # for every parameter
-						arg=${args[$i]} 
+						arg=${args[$i]}
 						if is_weekday $arg ; then 
-								DAYS_WORKED+=($arg); # load weekday 
+								DAYS_WORKED+=("$arg"); # load weekday 
 								i=$((i+1));
 								hours=${args[$i]} # get next arg
 								load_hours_param $hours;
@@ -138,18 +135,31 @@ function load_parameter(){
 		}
 
 
-check_config_file;
+# load config file
+load_config_file;
+
+# check and load parameters
 load_parameter $@;
-#echo $NAME
 
 
-# get the date of the last day worked 
-#WORK_DATE=$(date --date="last $DAY_OF_WORK" +"%B %d, %Y");
-#WORK_DATE_NUMERIC=$(date --date="last $DAY_OF_WORK" +"%m-%d-%y");
-#echo "getting Date for last $DAY_OF_WORK: $WORK_DATE";
+#echo ${DAYS_WORKED[*]}
+#echo ${STARTING_TIMES[*]}
+#echo ${ENDING_TIMES[*]}
 
-# Get the subject for the email
-#SUBJECT="${NAME}_Host_Invoice_${WORK_DATE_NUMERIC}";
+# for every day worked 
+for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
+
+		# get the date of the last day worked 
+		WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
+		WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m-%d-%y");
+		echo "getting Date for last $DAY_OF_WORK: $WORK_DATE";
+
+		# Get the subject for the email
+		#SUBJECT="${NAME}_Host_Invoice_${WORK_DATE_NUMERIC}";
+
+done
+
+
 
 #if [ $# -gt 0 ]
 	#then 
