@@ -3,6 +3,9 @@
 CONF_FILE="invoice.conf"
 
 declare -a DAYS_WORKED
+declare -a STARTED_TIMES 
+declare -a ENDED_TIMES 
+
 
 
 
@@ -45,22 +48,44 @@ function add_workday(){
 		esac
 }
 
+function print_help(){
+
+		echo """
+			Something went wrong:
+			plesae enter parameter of the form 12pm-2am
+		"""
+}
+
+
+function is_time_regex(){
+		# return tru if it matches regex for a single number or a ranger
+		pattern='^([0-2])?[1-9](:[0-5][0-9])?([AaPp][mM])?$';
+		if [[ $1 =~ $pattern ]]; then 
+				return 1;
+		else
+				return 0;
+		fi
+}
+
 function check_hours(){
 		# return tru if it matches regex for a single number or a ranger
-		pattern='/((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/';
+		pattern='^([0-2])?[1-9](:[0-5][0-9])?([AaPp][mM])?$';
 		
 		echo "checking $1";
 
 		if [[ $1 =~ "-"  ]]; then # it is range
 				echo "$1 is range";
-				IFS='-';
-				for i in "$1"; do  
-						echo "$i"
-				done
-				IFS=' ';
-
+				# divide range
+				first=$(echo $1 | cut -d '-' -f 1); 
+				last=$(echo $1 | cut -d '-' -f 2);
+				if is_time_regex $first; then 
+						echo "$first";
+				fi			
+				if is_time_regex $last; then 
+						echo "$last";
+				fi			
 		else 
-				if [[ $1 =~ $pattern ]]; then 
+				if is_time_regex $1; then 
 					echo "$1 is hour";	
 				else
 						echo "$1 is not hour";
