@@ -2,6 +2,7 @@
 
 CONF_FILE="invoice.conf";
 LATEX_FILE="invoice.tex";
+EMAIL_MESSAGE_FILE="email_message.txt";
 
 declare -a DAYS_WORKED;
 declare -a STARTING_TIMES;
@@ -144,6 +145,33 @@ function writting_closing_tags(){
 }
 
 
+function write_work_tables(){
+		# for every worked day and hours worked write the the invoice table
+		echo '\begin{invoiceTable}' >> $LATEX_FILE
+		# Fee category description
+		echo "\feetype{$SERVICE Services}" >> $LATEX_FILE
+		# for every day worked 
+		for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
+				# get the date of the last day worked 
+				WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
+				WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m-%d");
+				echo "getting Date for last ${DAYS_WORKED[$i]}: $WORK_DATE";
+				HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
+				echo "HOURS_WORKED";
+				echo $HOURS_WORKED;
+				echo "\\hourrow{$WORK_DATE_NUMERIC $SERVICE service, ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
+				echo ""
+		done
+}
+
+
+function clean_n_exit(){
+		# deletes the file generated an exits without error
+		\rm -v invoice.pdf invoice.log invoice.tex invoice.aux;
+		exit 0;
+}
+
+
 
 # load config file
 load_config_file;
@@ -151,66 +179,58 @@ load_config_file;
 # check and load parameters
 load_parameter $@;
 
-# load header
+# write header to tex file
 write_invoice_header;
 
-
-echo '\begin{invoiceTable}' >> $LATEX_FILE
-# Fee category description
-echo "\feetype{$SERVICE Services}" >> $LATEX_FILE
-
-# for every day worked 
-for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
-		# get the date of the last day worked 
-		WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
-		WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m-%d-%y");
-		echo "getting Date for last ${DAYS_WORKED[$i]}: $WORK_DATE";
-		HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
-		echo "HOURS_WORKED";
-		echo $HOURS_WORKED;
-		echo "\\hourrow{$SERVICE services from ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
-
-		echo ""
-done
+# write worked days and hours 
+write_work_tables
 
 # writting ending for file
 writting_closing_tags;
 
-
-#echo "Makeing Tex file"
-# replace the date with the date of the day of work
-#sed "s/\\\today/$WORK_DATE/" template.tex  > buffer1.tex
-# replace the detail string with current information
-#sed "s/$MATCH_STRING/$REPLACING_STRING/" buffer1.tex > edited_template.tex
-#\rm -f buffer1.tex
-
+# compile latex file and show to user
 echo "compiling Latex..."
-pdflatex invoice.tex
+pdflatex invoice.tex && atril invoice.pdf
 
 
-echo "Getting latex files..."
-atril invoice.pdf
+read -r -p "Do you want to send this invoice to $EMAIL_TO? [y/N] " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$  ]]
+then
+		# Get the subject for the email
+		EMAIL_SUBJECT="${NAME}_${SERVICE}_Invoice_$(date --date="today" +"%m-%d-%y")";
+		# change name of invoic pdf
+		cp invoice.pdf $EMAIL_SUBJECT.pdf; 
+		# check if archive dir exist, if not create it 
+		[ -d archive  ] || mkdir archive;
+		# move to archive
+		cp $EMAIL_SUBJECT.pdf archive # move to the archive
+		echo "sending mail to $EMAIL_TO"
+		# mailx to send the invoice
+		mailx -v  -s "$EMAIL_SUBJECT" \
+				-S smtp-use-starttls \
+				-S ssl-verify=ignore \
+				-S smtp-auth=login \
+				-S smtp=smtp://smtp.gmail.com:587 \
+				-S from="$NAME" \
+				-S smtp-auth-user="$GMAIL_FROM" \
+				-S smtp-auth-password="$GMAIL_PASSWORD" \
+				-S ssl-verify=ignore \
+				-a "$EMAIL_SUBJECT.pdf" \
+				"$EMAIL_TO" < $EMAIL_MESSAGE_FILE ;
+						# check if email was send successfully
+						if [  $? -eq 0 ] then 
+								echo "email send succesfully!"	;
+								rm $EMAIL_SUBJECT.pdf;
+						else
+								echo "could not send email";
+								\rm -v invoice.pdf invoice.log invoice.tex invoice.aux;
+								exit 1;
+						fi
+				else
+						clean_n_exit
+fi
 
 
-#cp edited_template.pdf ../archive/$SUBJECT.pdf
 
 
-# Get the subject for the email
-#EMAIL_SUBJECT="${NAME}_Host_Invoice_$(date --date="today" +"%m-%d-%y")";
 
-#echo "sending mail to $EMAIL_TO"
-# mailx to send the invoice
-# mailx -v  -s "$SUBJECT" \
-#		-S smtp-use-starttls \
-#		-S ssl-verify=ignore \
-#		-S smtp-auth=login \
-#		-S smtp=smtp://smtp.gmail.com:587 \
-#		-S from="$NAME" \
-#		-S smtp-auth-user="$GMAIL_FROM" \
-#		-S smtp-auth-password="$GMAIL_PASSWORD" \
-#		-S ssl-verify=ignore \
-#		-a "../archive/$SUBJECT.pdf" \
-#		"$EMAIL_TO" < $EMAIL_MESSAGE_FILE
-
-
-#echo "email send succesfully!"

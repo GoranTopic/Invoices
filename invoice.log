@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.8.2)  2 AUG 2021 11:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.8.2)  2 AUG 2021 12:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -223,15 +223,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 7--15
  []
 
 ( FP-ROUND ) ( FP-ROUND ) ( FP-MUL ) ( FP-ROUND ) ( FP-ROUND ) ( FP-ROUND )
-( FP-MUL ) ( FP-ROUND ) ( FP-DIV ) ( FP-ROUND )
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 1 on input line 19.
-
-
-Package longtable Warning: Table widths have changed. Rerun LaTeX.
-
-[1
+( FP-MUL ) ( FP-ROUND ) ( FP-DIV ) ( FP-ROUND ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./invoice.aux) ) 
 Here is how much of TeX's memory you used:
@@ -247,7 +239,7 @@ elix/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcbx1200.600pk> </home/
 telix/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/t
 exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on invoice.pdf (1 page, 31188 bytes).
+Output written on invoice.pdf (1 page, 31084 bytes).
 PDF statistics:
  26 PDF objects out of 1000 (max. 8388607)
  18 compressed objects within 1 object stream
