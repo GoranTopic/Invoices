@@ -137,11 +137,8 @@ function load_parameter(){
 function get_time_diff(){
 		# return the difference in time between to given times
 		first_time=$(date -d "$1" '+%s');
-		latter_time=$(date -d "$2" '+%s')
-		echo $first_time;
-		echo $latter_time;
-
-		echo $(date -u -d @$(($latter_time - $first_time)) '+%H:%M');
+		later_time=$(date -d "$2" '+%s')
+		echo $(date -u -d @$(($later_time - $first_time)) '+%H:%M');
 }
 
 # load config file
@@ -170,7 +167,7 @@ for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
 
 		
 		TIME_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
-		#echo $TIME_WORKED;
+		echo $TIME_WORKED;
 		#LEAVE_TIME=$(date -d "${STARTING_TIMES[$i]} 5 hours" +'%H:%M %P')
 		#echo "Leave time from ${STARTING_TIMES[$i]}: $LEAVE_TIME";
 
