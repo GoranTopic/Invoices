@@ -6,8 +6,7 @@ declare -a DAYS_WORKED
 
 
 
-function check_day_of_week(){
-		echo $1;
+function add_workday(){
 		case $1 in
 				monday)
 						echo -n "got monday";
@@ -25,22 +24,18 @@ function check_day_of_week(){
 						return 0;
 						;;
 				thursday)
-						echo -n "got thursday";
 						DAYS_WORKED+=('thursday');
 						return 0;
 						;;
 				friday)
-						echo -n "got friday";
 						DAYS_WORKED+=('friday');
 						return 0;
 						;;
 				saturday)
-						echo -n "got saturday";
 						DAYS_WORKED+=('saturday');
 						return 0;
 						;;
 				sunday)
-						echo -n "got sunday";
 						DAYS_WORKED+=('sunday');
 						return 0;
 						;;
@@ -50,6 +45,43 @@ function check_day_of_week(){
 		esac
 }
 
+function check_hours(){
+		# return tru if it matches regex for a single number or a ranger
+		pattern='/((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/';
+		
+		echo "checking $1";
+
+		if [[ $1 =~ "-"  ]]; then # it is range
+				echo "$1 is range";
+				IFS='-';
+				for i in "$1"; do  
+						echo "$i"
+				done
+				IFS=' ';
+
+		else 
+				if [[ $1 =~ $pattern ]]; then 
+					echo "$1 is hour";	
+				else
+						echo "$1 is not hour";
+				fi
+		fi
+		
+
+		
+}
+
+function is_weekday(){
+		# return trut it it is a weekday
+		case $1 in
+				monday | thursday | wednesday | thursday | friday | saturday | sunday)
+						return 0;
+						;;
+				*)
+						return 1;
+						;;
+		esac
+}
 
 function check_config_file() {
 		# load config file
@@ -62,20 +94,22 @@ function check_config_file() {
 		fi
 }
 
-echo "chekcing parameters"
+echo "checking parameters"
 
+echo " total parameters passed:"
 echo $#
+echo ''
 
 args=("$@"); # load parameter into array
 		for ((i=0; i < $#; i++)); do
-				#echo ${args[$i]};
-				if check_day_of_week ${args[$i]}; then 
-						echo "is weekday" ;
-						i+=1;
-						echo $i;
-				else
-						echo "is not weekday";
+				arg=${args[$i]}
+				if is_weekday $arg ; then 
+						DAYS_WORKED+=($arg);
+						i=$((i+1));
+						hours=${args[$i]} # get next arg
+						check_hours $hours;
 				fi
+				echo '';
 		done
 
 #check_config_file
