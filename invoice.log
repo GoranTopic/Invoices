@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.8.2)  2 AUG 2021 12:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.8.2)  2 AUG 2021 13:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -155,7 +155,7 @@ File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count268
 \l__pdf_internal_box=\box49
 )
-(./invoice.aux)
+No file invoice.aux.
 \openout1 = `invoice.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
@@ -172,7 +172,6 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 3.
 LaTeX Font Info:    ... okay on input line 3.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 3.
 LaTeX Font Info:    ... okay on input line 3.
-
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -223,23 +222,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 7--15
  []
 
 ( FP-ROUND ) ( FP-ROUND ) ( FP-MUL ) ( FP-ROUND ) ( FP-ROUND ) ( FP-ROUND )
-( FP-MUL ) ( FP-ROUND ) ( FP-DIV ) ( FP-ROUND ) [1
+( FP-MUL ) ( FP-ROUND ) ( FP-DIV ) ( FP-ROUND )
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 1 on input line 19.
+
+
+Package longtable Warning: Table widths have changed. Rerun LaTeX.
+
+[1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./invoice.aux) ) 
 Here is how much of TeX's memory you used:
- 2413 strings out of 483183
- 32556 string characters out of 5966293
- 290302 words of memory out of 5000000
+ 2411 strings out of 483183
+ 32532 string characters out of 5966293
+ 290235 words of memory out of 5000000
  17426 multiletter control sequences out of 15000+600000
  534227 words of font info for 30 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 38i,4n,37p,860b,210s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,4n,37p,860b,209s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/t
 elix/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcbx1200.600pk> </home/
 telix/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/t
 exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on invoice.pdf (1 page, 31084 bytes).
+Output written on invoice.pdf (1 page, 30680 bytes).
 PDF statistics:
  26 PDF objects out of 1000 (max. 8388607)
  18 compressed objects within 1 object stream

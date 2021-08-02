@@ -159,15 +159,51 @@ function write_work_tables(){
 				HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
 				echo "HOURS_WORKED";
 				echo $HOURS_WORKED;
-				echo "\\hourrow{$WORK_DATE_NUMERIC $SERVICE service, ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
+				echo "\\hourrow{ $WORK_DATE_NUMERIC $SERVICE service, ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
 				echo ""
 		done
 }
 
+function email_invoice(){
+		# Get the subject for the email
+		EMAIL_SUBJECT="${NAME}_${SERVICE}_Invoice_$(date --date="today" +"%m-%d-%y")";
+		SUBJECT="${EMAIL_SUBJECT// /_}"; # take out any white spaces 
+		# change name of invoic pdf
+		cp invoice.pdf "$SUBJECT.pdf"; 
+		# check if archive dir exist, if not create it 
+		[ -d archive  ] || mkdir archive;
+		# move to archive
+		cp $SUBJECT.pdf archive # move to the archive
+
+		echo "sending mail to $EMAIL_TO"
+		# mailx to send the invoice
+		s-nail -v -s "$EMAIL_SUBJECT" \
+				-S smtp-use-starttls \
+				-S ssl-verify=ignore \
+				-S smtp-auth=login \
+				-S smtp=smtp://smtp.gmail.com:587 \
+				-S from="$NAME" \
+				-S smtp-auth-user="$GMAIL_FROM" \
+				-S smtp-auth-password="$GMAIL_PASSWORD" \
+				-S ssl-verify=ignore \
+				-a "$SUBJECT.pdf" \
+				"$EMAIL_TO" < $EMAIL_MESSAGE_FILE ;
+
+		# check if email was send successfully
+		if [  $? -eq 0 ] 
+		then 
+				echo "email send succesfully!"	;
+				rm $SUBJECT.pdf;
+		else
+				echo "could not send email";
+				rm invoice.pdf invoice.log invoice.tex invoice.aux;
+				exit 1;
+		fi
+}
 
 function clean_n_exit(){
 		# deletes the file generated an exits without error
-		\rm -v invoice.pdf invoice.log invoice.tex invoice.aux;
+		rm invoice.pdf invoice.log invoice.tex invoice.aux;
 		exit 0;
 }
 
@@ -192,45 +228,15 @@ writting_closing_tags;
 echo "compiling Latex..."
 pdflatex invoice.tex && atril invoice.pdf
 
-
+# confirm user responce
 read -r -p "Do you want to send this invoice to $EMAIL_TO? [y/N] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$  ]]
 then
-		# Get the subject for the email
-		EMAIL_SUBJECT="${NAME}_${SERVICE}_Invoice_$(date --date="today" +"%m-%d-%y")";
-		# change name of invoic pdf
-		cp invoice.pdf $EMAIL_SUBJECT.pdf; 
-		# check if archive dir exist, if not create it 
-		[ -d archive  ] || mkdir archive;
-		# move to archive
-		cp $EMAIL_SUBJECT.pdf archive # move to the archive
-		echo "sending mail to $EMAIL_TO"
-		# mailx to send the invoice
-		mailx -v  -s "$EMAIL_SUBJECT" \
-				-S smtp-use-starttls \
-				-S ssl-verify=ignore \
-				-S smtp-auth=login \
-				-S smtp=smtp://smtp.gmail.com:587 \
-				-S from="$NAME" \
-				-S smtp-auth-user="$GMAIL_FROM" \
-				-S smtp-auth-password="$GMAIL_PASSWORD" \
-				-S ssl-verify=ignore \
-				-a "$EMAIL_SUBJECT.pdf" \
-				"$EMAIL_TO" < $EMAIL_MESSAGE_FILE ;
-						# check if email was send successfully
-						if [  $? -eq 0 ] then 
-								echo "email send succesfully!"	;
-								rm $EMAIL_SUBJECT.pdf;
-						else
-								echo "could not send email";
-								\rm -v invoice.pdf invoice.log invoice.tex invoice.aux;
-								exit 1;
-						fi
-				else
-						clean_n_exit
+		# if yes, email invoice
+		email_invoice 
+else
+		# else clean and exit
+		clean_n_exit
 fi
-
-
-
 
 
