@@ -134,6 +134,10 @@ function load_parameter(){
 				return 0;
 		}
 
+function get_time_diff(){
+		# return the difference in time between to given times
+		return date -u -d @$(($(date -d "$1" '+%s') - $(date -d "$2" '+%s'))) '+%H:%M';
+}
 
 # load config file
 load_config_file;
@@ -146,17 +150,27 @@ load_parameter $@;
 #echo ${STARTING_TIMES[*]}
 #echo ${ENDING_TIMES[*]}
 
+# Get the subject for the email
+EMAIL_SUBJECT="${NAME}_Host_Invoice_$(date --date="today" +"%m-%d-%y")";
+
+
+
 # for every day worked 
 for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
 
 		# get the date of the last day worked 
 		WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
 		WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m-%d-%y");
-		echo "getting Date for last $DAY_OF_WORK: $WORK_DATE";
+		echo "getting Date for last ${DAYS_WORKED[$i]}: $WORK_DATE";
 
-		# Get the subject for the email
-		#SUBJECT="${NAME}_Host_Invoice_${WORK_DATE_NUMERIC}";
+		
 
+		TIME_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
+		echo $TIME_WORKED;
+		#LEAVE_TIME=$(date -d "${STARTING_TIMES[$i]} 5 hours" +'%H:%M %P')
+		#echo "Leave time from ${STARTING_TIMES[$i]}: $LEAVE_TIME";
+
+		echo ""
 done
 
 
@@ -169,7 +183,6 @@ done
 			#echo "Setting number of hours worked to 5";
 			#NUMBER_OF_HOURS_WORKED=5
 			#LEAVE_TIME=$(date -d "$STARTING_TIME $NUMBER_OF_HOURS_WORKED hours" +'%H:%M %P')
-			
 #fi
 
 #MATCH_STRING="\\\hourrow{.*"
