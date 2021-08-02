@@ -7,52 +7,12 @@ declare -a DAYS_WORKED;
 declare -a STARTING_TIMES;
 declare -a ENDING_TIMES;
 
-function add_workday(){
-		case $1 in
-				monday)
-						echo -n "got monday";
-						DAYS_WORKED+=('monday');
-						return 0;
-						;;
-				tuesday)
-						echo -n "got tuesday";
-						DAYS_WORKED+=('tuesday');
-						return 0;
-						;;
-				wednesday)
-						echo -n "got wednesday";
-						DAYS_WORKED+=('wednesday');
-						return 0;
-						;;
-				thursday)
-						DAYS_WORKED+=('thursday');
-						return 0;
-						;;
-				friday)
-						DAYS_WORKED+=('friday');
-						return 0;
-						;;
-				saturday)
-						DAYS_WORKED+=('saturday');
-						return 0;
-						;;
-				sunday)
-						DAYS_WORKED+=('sunday');
-						return 0;
-						;;
-				*)
-						return 1;
-						;;
-		esac
-}
-
 function print_help(){
 		echo """
 			Something went wrong:
 			plesae enter parameter of the form 12pm-2am
 		"""
 }
-
 
 function is_time_regex(){
 		# return tru if it matches regex for a single number or a ranger
@@ -75,7 +35,7 @@ function load_hours_param(){
 						print_help;
 						exit 1;
 				else
-						STARTING_TIMES+=("$first");
+						STARTING_TIMES+=($(date -d"$first" '+%l:%M%P'));
 				fi			
 				last=$(echo $1 | cut -d '-' -f 2);
 				if ! is_time_regex $last; then 
@@ -83,8 +43,7 @@ function load_hours_param(){
 						print_help;
 						exit 1;
 				else 
-						time=$(date -d"$last" '+%H:%M')
-						ENDING_TIMES+=("$time");
+						ENDING_TIMES+=($(date -d"$last" '+%l:%M%P'));
 				fi			
 		else 
 				if ! is_time_regex $1; then 
@@ -92,8 +51,8 @@ function load_hours_param(){
 						print_help;
 						exit 1;
 				else
-						STARTING_TIMES+=("$STARTING_TIME");
-						ENDING_TIMES+=("$1");
+						STARTING_TIMES+=($(date -d"$STARTING_TIME" '+%l:%M%P'));
+						ENDING_TIMES+=($(date -d"$1" '+%l:%M%P'));
 				fi
 		fi
 }
@@ -209,7 +168,6 @@ for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
 		echo $HOURS_WORKED;
 		echo "\\hourrow{$SERVICE services from ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
 
-
 		echo ""
 done
 
@@ -217,8 +175,6 @@ done
 writting_closing_tags;
 
 
-#echo "Getting latex files..."
-#cd latex_files
 #echo "Makeing Tex file"
 # replace the date with the date of the day of work
 #sed "s/\\\today/$WORK_DATE/" template.tex  > buffer1.tex
@@ -228,6 +184,11 @@ writting_closing_tags;
 
 echo "compiling Latex..."
 pdflatex invoice.tex
+
+
+echo "Getting latex files..."
+atril invoice.pdf
+
 
 #cp edited_template.pdf ../archive/$SUBJECT.pdf
 
