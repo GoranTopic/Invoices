@@ -11,13 +11,15 @@ declare -a ENDING_TIMES;
 function print_help(){
 		echo """
 			Something went wrong:
-			plesae enter parameter of the form 12pm-2am
+			plesae enter parameter of the form: 
+				email_new_invoice staurday 12pm-2am friday 12pm sunday 25:00
+
 		"""
 }
 
 function is_time_regex(){
 		# return tru if it matches regex for a single number or a ranger
-		pattern='^([0-2])?[1-9](:[0-5][0-9])?([AaPp][mM])?$';
+		pattern='^([0-2])?[1-9]?[0-9](:[0-5][0-9])?([AaPp][mM])?$';
 		if [[ $1 =~ $pattern ]]; then 
 				return 0;
 		else
