@@ -161,7 +161,7 @@ function write_work_tables(){
 				HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
 				echo "HOURS_WORKED";
 				echo $HOURS_WORKED;
-				echo "\\hourrow{ $WORK_DATE_NUMERIC $SERVICE service, ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
+				echo "\\hourrow{  ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}  $WORK_DATE_NUMERIC}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
 				echo ""
 		done
 }
