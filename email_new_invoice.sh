@@ -18,7 +18,7 @@ function print_help(){
 }
 
 function is_time_regex(){
-		# return tru if it matches regex for a single number or a ranger
+		# return true if it matches regex for a single number or a ranger
 		pattern='^([0-2])?[1-9]?[0-9](:[0-5][0-9])?([AaPp][mM])?$';
 		if [[ $1 =~ $pattern ]]; then 
 				return 0;
@@ -28,7 +28,7 @@ function is_time_regex(){
 }
 
 function load_hours_param(){
-		# return tru if it matches regex for a single number or a ranger
+		# return true if it matches regex for a single number or a ranger
 		echo "checking $1";
 		if [[ $1 =~ "-"  ]]; then # it is range
 				# divide range
@@ -61,7 +61,7 @@ function load_hours_param(){
 }
 
 function is_weekday(){
-		# return trut it it is a weekday
+		# return true it it is a weekday
 		case $1 in
 				monday | thursday | wednesday | thursday | friday | saturday | sunday)
 						return 0;
@@ -156,7 +156,7 @@ function write_work_tables(){
 		for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
 				# get the date of the last day worked 
 				WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
-				WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m-%d");
+				WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m/%d");
 				echo "getting Date for last ${DAYS_WORKED[$i]}: $WORK_DATE";
 				HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
 				echo "HOURS_WORKED";
