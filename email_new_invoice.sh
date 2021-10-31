@@ -161,7 +161,7 @@ function write_work_tables(){
 				HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
 				echo "HOURS_WORKED";
 				echo $HOURS_WORKED;
-				echo "\\hourrow{  ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}  $WORK_DATE_NUMERIC}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
+				echo "\\hourrow{   ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}, $WORK_DATE_NUMERIC}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
 				echo ""
 		done
 }
@@ -231,7 +231,7 @@ echo "compiling Latex..."
 pdflatex invoice.tex && atril invoice.pdf
 
 # confirm user responce
-read -r -p "Do you want to send this invoice to $EMAIL_TO? [y/N] " response
+read -r -p "Do you want to send this invoice to $EMAIL_TO? [Y/N] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$  ]]
 then
 		# if yes, email invoice
