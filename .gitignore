@@ -1,5 +1,5 @@
 # ignore all config files
-*.conf
+
 
 # ignore all archived files and latexfiles
 archive/*
