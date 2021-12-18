@@ -42,7 +42,7 @@ function load_hours_param(){
 		fi			
 		last=$(echo $1 | cut -d '-' -f 2);
 		if ! is_time_regex $last; then 
-			echo "could not understand $last ";
+			echo "could not understand $last";
 			print_help;
 			exit 1;
 		else 
@@ -50,7 +50,7 @@ function load_hours_param(){
 		fi			
 	else 
 		if ! is_time_regex $1; then 
-			echo "could not understand $1 ";
+			echo "could not understand $1";
 			print_help;
 			exit 1;
 		else
@@ -231,14 +231,14 @@ echo "compiling Latex..."
 pdflatex invoice.tex && atril invoice.pdf
 
 # confirm user responce
-read -r -p "Do you want to send this invoice to $EMAIL_TO? [Y/N] " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$  ]]
-then
+#read -r -p "Do you want to send this invoice to $EMAIL_TO? [Y/N] " response
+#if [[ "$response" =~ ^([yY][eE][sS]|[yY])$  ]]
+#then
 	# if yes, email invoice
-	email_invoice 
-else
+	#email_invoice 
+#else
 	# else clean and exit
-	clean_n_exit
-fi
+	#clean_n_exit
+#fi
 
 
