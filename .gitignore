@@ -1,5 +1,5 @@
 # ignore all config files
-
+invoice.conf
 
 # ignore all archived files and latexfiles
 archive/*
