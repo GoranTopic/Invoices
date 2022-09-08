@@ -1,244 +1,244 @@
-	first_time=$(date -d "$1" '+%s');
-		source $CONF_FILE;
-	echo '{\bf Date:} \\' >> $LATEX_FILE
-		WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
-		else
-		else
-		else
-	if test -f $CONF_FILE; then
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$  ]]
-			echo "could not understand $first ";
-			rm $SUBJECT.pdf;
-	# writes to a latex file using the detail from the config file
-			rm invoice.pdf invoice.log invoice.tex invoice.aux;
-# writting ending for file
-		echo "Loding config file";
-	echo "checking $1";
-	# Fee category description
-	fi
-	fi
-	fi
-function load_parameter(){
-	echo "$hours.$((($minutes*10)/6))"
-	echo "\hfil{\Huge\bf $NAME}\hfil" >> $LATEX_FILE
-LATEX_FILE="invoice.tex";
-	# Define \tab to create some horizontal white space
-		-S smtp-auth=login \
-			echo "email send succesfully!"	;
-pdflatex invoice.tex && atril invoice.pdf
-function clean_n_exit(){
-	echo '\documentclass{invoice}' > $LATEX_FILE
-# confirm user responce
-EMAIL_MESSAGE_FILE="email_content.txt";
-	# Use the custom invoice class (invoice.cls)
-	plesae enter parameter of the form: 
-	pattern='^([0-2])?[1-9]?[0-9](:[0-5][0-9])?([AaPp][mM])?$';
-		if ! is_time_regex $last; then 
-	}
-	}
-	[ -d archive  ] || mkdir archive;
-		echo ""
-	# Whitespace
-	args=("$@"); # load parameter into array
-	# Company providing the invoice
-	#--------------------
-	#--------------------
-		else 
 #!/bin/bash
-		echo $HOURS_WORKED;
-	# HEADING SECTION
-	cp invoice.pdf "$SUBJECT.pdf"; 
-function is_weekday(){
-		echo "Could not find $CONF_FILE";
-function writting_closing_tags(){
-	# check if archive dir exist, if not create it 
-function email_invoice(){
-		-S smtp-auth-user="$GMAIL_FROM" \
-# check and load parameters
-	if [[ $1 =~ "-"  ]]; then # it is range
-declare -a DAYS_WORKED;
-else
-		echo "\\hourrow{   ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}, $WORK_DATE_NUMERIC}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
+
 CONF_FILE="invoice.conf";
-function write_invoice_header(){
-	echo """
-load_config_file;
-	clean_n_exit
-	else
-	else
-	echo "sending mail to $EMAIL_TO"
-		*)
-	rm invoice.pdf invoice.log invoice.tex invoice.aux;
-	hours=$(date -u -d @$(($later_time - $first_time)) '+%H');
-		-a "$SUBJECT.pdf" \
-			ENDING_TIMES+=($(date -d"$last" '+%l:%M%P'));
-function get_time_diff(){
-	email_invoice 
-			echo "could not understand $last";
-		echo "getting Date for last ${DAYS_WORKED[$i]}: $WORK_DATE";
-function is_time_regex(){
-	# load config file
-		if [  $? -eq 0 ] 
-	SUBJECT="${EMAIL_SUBJECT// /_}"; # take out any white spaces 
-read -r -p "Do you want to send this invoice to $EMAIL_TO? [Y/N] " response
-	EMAIL_SUBJECT="${NAME}_${SERVICE}_Invoice_$(date --date="today" +"%m-%d-%y")";
-		-S from="$NAME" \
-	echo "\tab $RECIP_NAME \\\ " >> $LATEX_FILE
-			;;
-			;;
-	# Recipient's company
-			echo "could not understand $1";
-		"$EMAIL_TO" < $EMAIL_MESSAGE_FILE ;
-	if [[ $1 =~ $pattern ]]; then 
-	email_new_invoice staurday 12pm-2am friday 12pm sunday 25:00
-	# for every worked day and hours worked write the the invoice table
-	else 
-	echo "$CITY, $STATE $ZIP_CODE \hfill $PERSONAL_EMAIL" >> $LATEX_FILE
-# load config file
-writting_closing_tags;
-		if ! is_time_regex $first; then 
-		-S smtp=smtp://smtp.gmail.com:587 \
-	# Get the subject for the email
-		fi			
-		fi			
-	echo '\begin{document}' >> $LATEX_FILE
-	Something went wrong:
-	cp $SUBJECT.pdf archive # move to the archive
-	echo '\end{invoiceTable}' >> $LATEX_FILE
-	"""
-			if is_weekday $arg ; then 
-	# mailx to send the invoice
-		if ! is_time_regex $1; then 
-# write header to tex file
-function load_config_file() {
-write_invoice_header;
-			return 1;
-	# Invoice date
-			echo "could not send email";
-	for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
-		# get the date of the last day worked 
-	echo '\\ \\' >> $LATEX_FILE
-				DAYS_WORKED+=("$arg"); # load weekday 
-# write worked days and hours 
-	case $1 in
-		echo "HOURS_WORKED";
-then
-	echo '\hrule' >> $LATEX_FILE 
-	echo '\end{document}' >> $LATEX_FILE
-	s-nail -v -s "$EMAIL_SUBJECT" \
-	# if yes, email invoice
-		for ((i=0; i < $#; i++)); do # for every parameter
-	echo "\feetype{$SERVICE Services}" >> $LATEX_FILE
-	# return true it it is a weekday
-function load_hours_param(){
-function write_work_tables(){
-	esac
-	echo '\tab \today \\' >> $LATEX_FILE
-		monday | thursday | wednesday | thursday | friday | saturday | sunday)
-				i=$((i+1));
-	# else clean and exit
-	# for every day worked 
-			exit 1;
-			exit 1;
-			exit 1;
-			exit 1;
-declare -a ENDING_TIMES;
-load_parameter $@;
-		return 0;
-		return 0;
-	minutes=$(date -u -d @$(($later_time - $first_time)) '+%M');
+LATEX_FILE="invoice.tex";
+EMAIL_MESSAGE_FILE="email_content.txt";
+
+declare -a DAYS_WORKED;
 declare -a STARTING_TIMES;
-	# change name of invoic pdf
-	# load parameters 
-			STARTING_TIMES+=($(date -d"$STARTING_TIME" '+%l:%M%P'));
-		fi
-		fi
-	exit 0;
-fi
-	echo '\bigskip\break' >> $LATEX_FILE
-			STARTING_TIMES+=($(date -d"$first" '+%l:%M%P'));
-		-S smtp-auth-password="$GMAIL_PASSWORD" \
-			return 0;
-	# Horizontal line
-				hours=${args[$i]} # get next arg
-			ENDING_TIMES+=($(date -d"$1" '+%l:%M%P'));
+declare -a ENDING_TIMES;
+
 function print_help(){
-		HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
-	# move to archive
-echo "compiling Latex..."
-		first=$(echo $1 | cut -d '-' -f 1); 
-		then 
-write_work_tables
-		exit 
-	# begin document 
+	echo """
+	Something went wrong:
+	plesae enter parameter of the form: 
+	email_new_invoice staurday 12pm-2am friday 12pm sunday 25:00
+
+	"""
+}
+
+function is_time_regex(){
+	# return true if it matches regex for a single number or a ranger
+	pattern='^([0-2])?[1-9]?[0-9](:[0-5][0-9])?([AaPp][mM])?$';
+	if [[ $1 =~ $pattern ]]; then 
+		return 0;
+	else
 		return 1;
-	echo '\def \tab {\hspace*{3ex}}' >> $LATEX_FILE 
-		# check if email was send successfully
-	echo "$ADDRESS \hfill  \\\ " >> $LATEX_FILE
-	echo '{\bf Invoice To:} \\' >> $LATEX_FILE
-		-S smtp-use-starttls \
-		WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m/%d");
-			fi
-	# return the difference in time between to given times
-		-S ssl-verify=ignore \
-		-S ssl-verify=ignore \
-		done
-	done
-	# deletes the file generated an exits without error
-			arg=${args[$i]}
-# compile latex file and show to user
+	fi
+}
+
+function load_hours_param(){
 	# return true if it matches regex for a single number or a ranger
-	# return true if it matches regex for a single number or a ranger
-	echo '\begin{invoiceTable}' >> $LATEX_FILE
-	# Your address and contact information
-	# writes the closing statements for the latex file
+	echo "checking $1";
+	if [[ $1 =~ "-"  ]]; then # it is range
+		# divide range
+		first=$(echo $1 | cut -d '-' -f 1); 
+		if ! is_time_regex $first; then 
+			echo "could not understand $first ";
+			print_help;
+			exit 1;
+		else
+			STARTING_TIMES+=($(date -d"$first" '+%l:%M%P'));
+		fi			
 		last=$(echo $1 | cut -d '-' -f 2);
+		if ! is_time_regex $last; then 
+			echo "could not understand $last";
+			print_help;
+			exit 1;
+		else 
+			ENDING_TIMES+=($(date -d"$last" '+%l:%M%P'));
+		fi			
+	else 
+		if ! is_time_regex $1; then 
+			echo "could not understand $1";
+			print_help;
+			exit 1;
+		else
+			STARTING_TIMES+=($(date -d"$STARTING_TIME" '+%l:%M%P'));
+			ENDING_TIMES+=($(date -d"$1" '+%l:%M%P'));
+		fi
+	fi
+}
+
+function is_weekday(){
+	# return true it it is a weekday
+	case $1 in
+		monday | thursday | wednesday | thursday | friday | saturday | sunday)
+			return 0;
+			;;
+		*)
+			return 1;
+			;;
+	esac
+}
+
+function load_config_file() {
+	# load config file
+	if test -f $CONF_FILE; then
+		echo "Loding config file";
+		source $CONF_FILE;
+	else
+		echo "Could not find $CONF_FILE";
+		exit 
+	fi
+}
+
+function load_parameter(){
+	# load parameters 
+	args=("$@"); # load parameter into array
+		for ((i=0; i < $#; i++)); do # for every parameter
+			arg=${args[$i]}
+			if is_weekday $arg ; then 
+				DAYS_WORKED+=("$arg"); # load weekday 
+				i=$((i+1));
+				hours=${args[$i]} # get next arg
+				load_hours_param $hours;
+			fi
+		done
+		return 0;
+	}
+
+function get_time_diff(){
+	# return the difference in time between to given times
+	first_time=$(date -d "$1" '+%s');
+	later_time=$(date -d "$2" '+%s');
+	hours=$(date -u -d @$(($later_time - $first_time)) '+%H');
+	minutes=$(date -u -d @$(($later_time - $first_time)) '+%M');
+	echo "$hours.$((($minutes*10)/6))"
+}
+
+function write_invoice_header(){
+	# writes to a latex file using the detail from the config file
+	# Use the custom invoice class (invoice.cls)
+	echo '\documentclass{invoice}' > $LATEX_FILE
+	# Define \tab to create some horizontal white space
+	echo '\def \tab {\hspace*{3ex}}' >> $LATEX_FILE 
+	# begin document 
+	echo '\begin{document}' >> $LATEX_FILE
+	#--------------------
+	# HEADING SECTION
+	#--------------------
+	# Company providing the invoice
+
+	echo "\hfil{\Huge\bf $NAME}\hfil" >> $LATEX_FILE
+	# Whitespace
+	echo '\bigskip\break' >> $LATEX_FILE
+	# Horizontal line
+	echo '\hrule' >> $LATEX_FILE 
+	# Your address and contact information
+	echo "$ADDRESS \hfill  \\\ " >> $LATEX_FILE
+	echo "$CITY, $STATE $ZIP_CODE \hfill $PERSONAL_EMAIL" >> $LATEX_FILE
+	echo '\\ \\' >> $LATEX_FILE
+	echo '{\bf Invoice To:} \\' >> $LATEX_FILE
+	# Invoice recipient
+	echo "\tab $RECIP_NAME \\\ " >> $LATEX_FILE
+	# Recipient's company
+	echo "\tab $RECIP_ADDRESS \\\ " >> $LATEX_FILE
+	# Invoice date
+	echo '{\bf Date:} \\' >> $LATEX_FILE
+	echo '\tab \today \\' >> $LATEX_FILE
 	return 0
 }
+
+function writting_closing_tags(){
+	# writes the closing statements for the latex file
+	echo '\end{invoiceTable}' >> $LATEX_FILE
+	echo '\end{document}' >> $LATEX_FILE
 }
+
+
+function write_work_tables(){
+	# for every worked day and hours worked write the the invoice table
+	echo '\begin{invoiceTable}' >> $LATEX_FILE
+	# Fee category description
+	echo "\feetype{$SERVICE Services}" >> $LATEX_FILE
+	# for every day worked 
+	for ((i=0; i < ${#DAYS_WORKED[@]}; i++)); do # for every parameter
+		# get the date of the last day worked 
+		WORK_DATE=$(date --date="last ${DAYS_WORKED[$i]}" +"%B %d, %Y");
+		WORK_DATE_NUMERIC=$(date --date="last ${DAYS_WORKED[$i]}" +"%m/%d");
+		echo "getting Date for last ${DAYS_WORKED[$i]}: $WORK_DATE";
+		HOURS_WORKED=$(get_time_diff ${STARTING_TIMES[$i]} ${ENDING_TIMES[$i]});
+		echo "HOURS_WORKED";
+		echo $HOURS_WORKED;
+		echo "\\hourrow{   ${STARTING_TIMES[$i]} to ${ENDING_TIMES[$i]}, $WORK_DATE_NUMERIC}{$HOURS_WORKED}{$HOUR_RATE}" >> $LATEX_FILE
+		echo ""
+	done
 }
+
+function email_invoice(){
+	# Get the subject for the email
+	EMAIL_SUBJECT="${NAME}_${SERVICE}_Invoice_$(date --date="today" +"%m-%d-%y")";
+	SUBJECT="${EMAIL_SUBJECT// /_}"; # take out any white spaces 
+	# change name of invoic pdf
+	cp invoice.pdf "$SUBJECT.pdf"; 
+	# check if archive dir exist, if not create it 
+	[ -d archive  ] || mkdir archive;
+	# move to archive
+	cp $SUBJECT.pdf archive # move to the archive
+
+	echo "sending mail to $EMAIL_TO"
+	# mailx to send the invoice
+	s-nail -v -s "$EMAIL_SUBJECT" \
+		-S smtp-use-starttls \
+		-S ssl-verify=ignore \
+		-S smtp-auth=login \
+		-S smtp=smtp://smtp.gmail.com:587 \
+		-S from="$NAME" \
+		-S smtp-auth-user="$GMAIL_FROM" \
+		-S smtp-auth-password="$GMAIL_PASSWORD" \
+		-S ssl-verify=ignore \
+		-a "$SUBJECT.pdf" \
+		"$EMAIL_TO" < $EMAIL_MESSAGE_FILE ;
+
+		# check if email was send successfully
+		if [  $? -eq 0 ] 
+		then 
+			echo "email send succesfully!"	;
+			rm $SUBJECT.pdf;
+		else
+			echo "could not send email";
+			rm invoice.pdf invoice.log invoice.tex invoice.aux;
+			exit 1;
+		fi
+	}
+
+function clean_n_exit(){
+	# deletes the file generated an exits without error
+	rm invoice.pdf invoice.log invoice.tex invoice.aux;
+	exit 0;
 }
-}
-}
-}
-}
-}
-}
-	later_time=$(date -d "$2" '+%s');
-	echo "\tab $RECIP_ADDRESS \\\ " >> $LATEX_FILE
 
 
 
+# load config file
+load_config_file;
+
+# check and load parameters
+load_parameter $@;
+
+# write header to tex file
+write_invoice_header;
+
+# write worked days and hours 
+write_work_tables
+
+# writting ending for file
+writting_closing_tags;
+
+# compile latex file and show to user
+echo "compiling Latex..."
+pdflatex invoice.tex && atril invoice.pdf
+
+# confirm user responce
+read -r -p "Do you want to send this invoice to $EMAIL_TO? [Y/N] " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$  ]]
+then
+	# if yes, email invoice
+	email_invoice 
+else
+	# else clean and exit
+	clean_n_exit
+fi
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				load_hours_param $hours;
-	# Invoice recipient
-		# divide range
-			print_help;
-			print_help;
-			print_help;
